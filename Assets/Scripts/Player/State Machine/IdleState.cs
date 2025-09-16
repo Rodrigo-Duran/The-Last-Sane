@@ -7,8 +7,6 @@ public class IdleState : IStateManager<PlayerController>
     public void EnterState(PlayerController controller, IStateManager<PlayerController> lastState)
     {
         Debug.Log("ENTER IDLE STATE");
-        controller.actualSpeed = 0;
-        controller.rb.linearVelocity = Vector3.zero;
     }
 
     public void ExitState(PlayerController controller)

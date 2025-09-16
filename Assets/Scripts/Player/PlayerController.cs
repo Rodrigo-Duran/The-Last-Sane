@@ -19,47 +19,28 @@ public class PlayerController : MonoBehaviour
 
     #region Components
 
-    [HideInInspector] public Rigidbody rb;
+    [field: Header("Components")]
+    public CharacterController characterController { get; private set; }
 
     #endregion
 
-    #region Movement
-
-    [Header("Movement")]
-    public float speed;
-    public float rotationSpeed;
-    [HideInInspector] public float actualSpeed;
-     public Vector2 direction;
-
-    #endregion
-
-    [HideInInspector] public Transform cameraObject;
     #endregion
 
     #region Unity Methods
 
+    private void Awake()
+    {
+        characterController = GetComponent<CharacterController>();
+    }
+
     private void Start()
     {
-        cameraObject = Camera.main.transform;
-        rb = GetComponent<Rigidbody>();
         SwitchState(new IdleState());
-
     }
 
     void Update()
     {
-        direction = InputManager.GetMovementInput().normalized;
         currentState?.UpdateState(this);
-
-        #region Rotation
-        if (direction.magnitude != 0)
-        {
-            Vector3 input = new Vector3(direction.x, 0, direction.y);
-            var relative = (transform.position + input) - transform.position;
-            var rot = Quaternion.LookRotation(relative, Vector3.up);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, rot, rotationSpeed * Time.deltaTime);
-        }
-        #endregion
     }
 
     private void FixedUpdate()
